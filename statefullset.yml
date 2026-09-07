@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: statefulset
+metadata:
+  name: myapp-statefulset
+  namespace: default
+spec:
+  serviceName: "myapp-service"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp-database
+  template:
+    metadata:
+      labels:
+        app: myapp-database
+    spec:
+      containers:
+        - name: myapp-container-db
+          image: shasi5612/bloodback:dbimage
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: mysecret
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          volumes:
+            - name: myapp-db-storage
+              mountPath: /var/lib/mysql
+      volumeClaimTemplates:
+        - metadata:
+            name: myapp-db-storage
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            resources:
+              requests:
+                storage: 1Gi
