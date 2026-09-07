@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: statefulset
+kind: Statefulset
 metadata:
   name: myapp-statefulset
   namespace: default
