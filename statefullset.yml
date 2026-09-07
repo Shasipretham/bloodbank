@@ -4,7 +4,7 @@ metadata:
   name: myapp-statefulset
   namespace: default
 spec:
-  serviceName: "myapp-service"
+  serviceName: db-service
   replicas: 3
   selector:
     matchLabels:
